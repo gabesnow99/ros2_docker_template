@@ -1,0 +1,26 @@
+services:
+  my_container:
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - ROS_DISTRO=humble
+
+    stdin_open: true
+    tty: true
+
+    volumes:
+      - ./packages:/root/ros2_ws/src/packages
+      - ./finish_setup.sh:/root/finish_setup.sh
+      - /dev:/dev
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority
+
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+
+    privileged: true
+
+    network_mode: host
